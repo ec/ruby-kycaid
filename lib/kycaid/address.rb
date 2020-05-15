@@ -3,15 +3,18 @@ module KYCAID
     extend Client
 
     def self.create(params)
-      KYCAID::Document.create(
+      p params
+      z = KYCAID::Document.create(
         {
           front_file: params[:front_file],
           applicant_id: params[:applicant_id],
           type: 'ADDRESS_DOCUMENT'
         }
       )
-      protected_params = params.slice(:country, :state_or_province, :city, :postal_code, :full_address, :applicant_id, :type).compact
+      p z
+      protected_params = params.slice(:country, :city, :postal_code, :full_address, :applicant_id, :type)
 
+      p protected_params
       response = post("/addresses", protected_params)
       new(JSON.parse(response.body))
     end
